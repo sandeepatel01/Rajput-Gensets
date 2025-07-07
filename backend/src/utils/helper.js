@@ -50,3 +50,11 @@ export const generateToken = () => {
             tokenExpiry,
       };
 };
+
+export const capitalize = (name) => {
+      return name
+            .toLowerCase()
+            .split(" ")
+            .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+            .join(" ");
+}
