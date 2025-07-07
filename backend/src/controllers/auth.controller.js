@@ -1,6 +1,6 @@
 import ms from "ms";
 import { cloudinaryUpload } from "../lib/cloudinary";
-import { sendVerificationMail } from "../lib/sendMail";
+import { sendResetPasswordMail, sendVerificationMail } from "../lib/sendMail";
 import { User } from "../models/user.model";
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
@@ -12,6 +12,7 @@ import { generateCookieOptions } from "../lib/generateCookieOptions";
 import { zodErrorHandler } from "../utils/zodErrorHandler";
 import { validateEmail, validateLogin } from "../validators/authValidation";
 import { ht } from "date-fns/locale";
+import { ProviderEnum } from "../utils/constants";
 
 const register = asyncHandler(async (req, res) => {
       const { fullname, email, password } = req.body;
@@ -219,10 +220,48 @@ const logout = asyncHandler(async (req, res) => {
             .json(new ApiResponse(200, "User logged out successfully", null));
 });
 
+const forgotPassword = asyncHandler(async (req, res) => {
+      const { email } = zodErrorHandler(validateEmail(req.body));
+
+      const user = await User.findOne({ email });
+      if (!user) {
+            return res
+                  .status(200)
+                  .json(
+                        new ApiResponse(200, "if you have an account with us, we will send you an email to forget your password", null)
+                  );
+      };
+
+      if (!user.provider !== ProviderEnum.CUSTOM) {
+            return res
+                  .status(200)
+                  .json(
+                        new ApiResponse(200, "You signed up using Google. Please use Google Sign-in to access your account.", {
+                              code: "OAUTH_USER",
+                        })
+                  );
+      };
+
+      const { token, hashedToken, tokenExpiry } = generateToken();
+
+      await User.findByIdAndUpdate(user._id, {
+            passwordResetToken: hashedToken,
+            passwordResetTokenExpiry: tokenExpiry
+      });
+
+      await sendResetPasswordMail(user.fullName, user.email, token);
+      console.log("Password forget email sent successfully: ", { email, userId: user._id, IP: req.ip });
+
+      res
+            .status(200)
+            .json(new ApiResponse(200, "if you have an account with us, we will send you an email to forget your password", null));
+});
+
 export {
       register,
       verifyEmail,
       resendVerificationMail,
       login,
-      logout
+      logout,
+      forgotPassword
 }
