@@ -31,3 +31,5 @@ const cloudinaryUpload = async (localFilePath) => {
             }
       }
 }
+
+export { cloudinaryUpload };
