@@ -108,9 +108,23 @@ const deleteUserById = asyncHandler(async (req, res) => {
             .json(new ApiResponse(200, "User deleted successfully", null));
 });
 
+const logoutUserSession = asyncHandler(async (req, res) => {
+      const { sessionId } = req.params;
+      if (!sessionId) throw new ApiError(400, "Session id not found");
+
+      await Session.findByIdAndDelete(sessionId);
+
+      console.log(`User session with id ${sessionId} logged out successfully: `, { loggedOutBy: req.user.email });
+
+      res
+            .status(200)
+            .json(new ApiResponse(200, "User session logged out successfully", null));
+});
+
 export {
       getAllUsers,
       getUserById,
       updateUserRole,
-      deleteUserById
+      deleteUserById,
+      logoutUserSession
 }
