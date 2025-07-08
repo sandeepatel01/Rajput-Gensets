@@ -1,5 +1,5 @@
 import { OAuth2Client } from "google-auth-library";
-import { ApiError } from "./ApiError";
+import { ApiError } from "./ApiError.js";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -25,4 +25,4 @@ export const verifyGoogleToken = async (token) => {
       };
 
       return payload;
-}
+};

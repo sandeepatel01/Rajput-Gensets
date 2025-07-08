@@ -1,5 +1,4 @@
-import { ApiError } from "./ApiError";
-
+import { ApiError } from "./ApiError.js";
 
 export const zodErrorHandler = (result) => {
       if (!result.success) {
