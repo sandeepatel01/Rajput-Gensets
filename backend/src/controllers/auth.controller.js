@@ -14,6 +14,8 @@ import { zodErrorHandler } from "../utils/zodErrorHandler";
 import { validateEmail, validateLogin, validateResetPassword } from "../validators/authValidation";
 import { ProviderEnum } from "../utils/constants";
 import { sessionFormatter } from "../utils/sessionFormatter";
+import { verifyGoogleToken } from "../utils/verifyGoogleToken";
+
 
 const register = asyncHandler(async (req, res) => {
       const { fullname, email, password } = req.body;
@@ -403,6 +405,118 @@ const getActiveSessions = asyncHandler(async (req, res) => {
 
 });
 
+const logoutSpecificSession = asyncHandler(async (req, res) => {
+      const { id } = req.user;
+      const { sessionId } = req.params;
+
+      const session = await Session.findById(sessionId);
+
+      if (!session || session.userId.toString() !== id.toString()) {
+            throw new CustomError(401, "Invalid session ID");
+      }
+
+      await Session.deleteOne({ _id: sessionId });
+      console.log("User logged out of specific session");
+
+      res
+            .status(200)
+            .json(new ApiResponse(200, "User logged out of specific session successfully", null));
+
+});
+
+const loginWithGoogle = asyncHandler(async (req, res) => {
+      const { token, keepSignedIn } = req.body;
+      const payload = await verifyGoogleToken(token);
+
+      const { name, email, picture } = payload;
+      if (!name || !email || !picture) {
+            throw new ApiError(400, "Invalid Google token");
+      };
+
+      const existingUser = await User.findOne({ email });
+
+      let user = existingUser;
+      if (!user) {
+            user = await User.create({
+                  email,
+                  fullname: name,
+                  isVerified: true,
+                  avatar: picture,
+                  provider: ProviderEnum.GOOGLE,
+            });
+      };
+
+      const userAgent = req.headers["user-agent"];
+      const ipAddress = req.ip;
+
+      const existingSession = await Session.findOne({
+            userId: user._id,
+            userAgent,
+            ipAddress
+      });
+
+      const existingSessionsCount = await Session.countDocuments({
+            userId: user._id,
+      });
+
+      if (!existingSession && existingSessionsCount >= process.env.MAX_SESSIONS) {
+            throw new ApiError(400, "You have reached the maximum number of sessions. Please log out of an existing session to create a new one.");
+      };
+
+      const accessToken = generateAccessToken(user);
+      const refreshToken = generateRefreshToken(user);
+
+      const hashedRefreshToken = hashToken(refreshToken);
+      const expiresAt = new Date(Date.now() + ms(process.env.REFRESH_TOKEN_EXPIRY));
+
+      if (existingSession) {
+            // Update refreshToken + expiry for existing session
+            await Session.updateOne(
+                  { _id: existingSession._id },
+                  {
+                        $set: {
+                              refreshToken: hashedRefreshToken,
+                              expiresAt,
+                        },
+                  }
+            );
+      } else {
+            // Create new session
+            await Session.create({
+                  userId: user._id,
+                  userAgent,
+                  ipAddress,
+                  refreshToken: hashedRefreshToken,
+                  expiresAt,
+            });
+      };
+
+      console.log(`User ${user.email} logged in with Google successfully`);
+
+      res
+            .status(200)
+            .cookie("accessToken", accessToken, generateCookieOptions())
+            .cookie("refreshToken", refreshToken, generateCookieOptions({ rememberMe: keepSignedIn }))
+            .json(new ApiResponse(200, "User logged in with Google successfully", null));
+
+});
+
+const getProfile = asyncHandler(async (req, res) => {
+      const { id } = req.user;
+      const user = await User.findById(id);
+
+      if (!user) {
+            throw new ApiError(404, "User not found");
+      };
+
+      const safeUser = sanitizeUser(user);
+      console.log("User profile retrieved successfully", { email: user.email, userId: user._id, IP: req.ip });
+
+      res
+            .status(200)
+            .json(new ApiResponse(200, "Get profile successfully", safeUser));
+});
+
 export {
       register,
       verifyEmail,
@@ -413,5 +527,8 @@ export {
       resetPassword,
       refreshAccessToken,
       logoutAllSessions,
-      getActiveSessions
-}
+      getActiveSessions,
+      logoutSpecificSession,
+      loginWithGoogle,
+      getProfile
+};
