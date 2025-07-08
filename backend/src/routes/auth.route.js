@@ -35,7 +35,7 @@ router.route("/refresh-token").get(refreshAccessToken);
 router.route("/logout").post(isLoggedIn, logout);
 router.route("/logout-all-sessions").post(isLoggedIn, logoutAllSessions);
 router.route("/sessions").get(isLoggedIn, getActiveSessions);
-router.route("/sessions/:sessionId").post(isLoggedIn, logoutSpecificSession);
+router.route("/session/:sessionId").post(isLoggedIn, logoutSpecificSession);
 
 router.route("/login/google").post(loginWithGoogle);
 

@@ -6,7 +6,7 @@ import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { comparePassword, generateAccessToken, generateRefreshToken, generateToken, hashToken } from "../utils/helper.js";
+import { comparePassword, generateAccessToken, generateRefreshToken, generateToken, hashPassword, hashToken } from "../utils/helper.js";
 import { sanitizeUser } from "../utils/sanitizeUser.js";
 import { Session } from "../models/session.model.js";
 import { generateCookieOptions } from "../lib/generateCookieOptions.js";
