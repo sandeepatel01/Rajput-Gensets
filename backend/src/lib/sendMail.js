@@ -1,7 +1,10 @@
 import Mailgen from "mailgen";
+import dotenv from "dotenv";
 import { capitalize } from "../utils/helper.js";
 import { MailtrapClient } from "mailtrap";
 import { ApiError } from "../utils/ApiError.js";
+
+dotenv.config();
 
 const mailGenerator = new Mailgen({
       theme: "default",

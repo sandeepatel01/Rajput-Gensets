@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import { ApiError } from "../utils/ApiError.js";
-import path from "path/promises";
+import path from "path";
 import fs from "fs";
 
 cloudinary.config({

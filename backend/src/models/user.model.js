@@ -33,13 +33,13 @@ const userSchema = new mongoose.Schema({
             default: UserRolesEnum.USER
       },
       provider: {
-            required: true,
+            type: String,
             enum: Object.values(ProviderEnum),
             default: ProviderEnum.CUSTOM
       },
       isVerified: {
-            required: true,
             type: Boolean,
+            required: true,
             default: false
       },
       verificationToken: {
