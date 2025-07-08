@@ -33,9 +33,11 @@ app.use(cors(corsOptions));
 // Import routes
 import healthCheck from "./routes/healthCheck.route.js";
 import authRoute from "./routes/auth.route.js";
+import adminRoute from "./routes/admin.route.js";
 
 app.use("/api/v1/healthcheck", healthCheck);
 app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/admin", adminRoute);
 
 
 export default app;
