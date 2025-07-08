@@ -1,11 +1,11 @@
 import { format } from "date-fns";
-import { Session } from "../models/session.model";
-import { User } from "../models/user.model";
-import { asyncHandler } from "../utils/asyncHandler";
-import { capitalize } from "../utils/helper";
-import { ApiResponse } from "../utils/ApiResponse";
-import { sessionFormatter } from "../utils/sessionFormatter";
-import { UserRolesEnum } from "../utils/constants";
+import { Session } from "../models/session.model.js";
+import { User } from "../models/user.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { capitalize } from "../utils/helper.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { sessionFormatter } from "../utils/sessionFormatter.js";
+import { UserRolesEnum } from "../utils/constants.js";
 
 const getAllUsers = asyncHandler(async (req, res) => {
       const adminId = req.user.id;
