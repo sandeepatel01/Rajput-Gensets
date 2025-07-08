@@ -1,20 +1,20 @@
 import ms from "ms";
 import jwt from "jsonwebtoken";
-import { cloudinaryUpload } from "../lib/cloudinary";
-import { sendResetPasswordMail, sendVerificationMail } from "../lib/sendMail";
-import { User } from "../models/user.model";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
+import { cloudinaryUpload } from "../lib/cloudinary.js";
+import { sendResetPasswordMail, sendVerificationMail } from "../lib/sendMail.js";
+import { User } from "../models/user.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler";
-import { comparePassword, generateAccessToken, generateRefreshToken, generateToken, hashToken } from "../utils/helper";
-import { sanitizeUser } from "../utils/sanitizeUser";
-import { Session } from "../models/session.model";
-import { generateCookieOptions } from "../lib/generateCookieOptions";
-import { zodErrorHandler } from "../utils/zodErrorHandler";
-import { validateEmail, validateLogin, validateRegister, validateResetPassword } from "../validators/authValidation";
-import { ProviderEnum } from "../utils/constants";
-import { sessionFormatter } from "../utils/sessionFormatter";
-import { verifyGoogleToken } from "../utils/verifyGoogleToken";
+import { comparePassword, generateAccessToken, generateRefreshToken, generateToken, hashToken } from "../utils/helper.js";
+import { sanitizeUser } from "../utils/sanitizeUser.js";
+import { Session } from "../models/session.model.js";
+import { generateCookieOptions } from "../lib/generateCookieOptions.js";
+import { zodErrorHandler } from "../utils/zodErrorHandler.js";
+import { validateEmail, validateLogin, validateRegister, validateResetPassword } from "../validators/authValidation.js";
+import { ProviderEnum } from "../utils/constants.js";
+import { sessionFormatter } from "../utils/sessionFormatter.js";
+import { verifyGoogleToken } from "../utils/verifyGoogleToken.js";
 
 const register = asyncHandler(async (req, res) => {
       const { fullname, email, password } = zodErrorHandler(validateRegister(req.body));
