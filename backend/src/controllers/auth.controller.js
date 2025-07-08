@@ -11,14 +11,14 @@ import { sanitizeUser } from "../utils/sanitizeUser";
 import { Session } from "../models/session.model";
 import { generateCookieOptions } from "../lib/generateCookieOptions";
 import { zodErrorHandler } from "../utils/zodErrorHandler";
-import { validateEmail, validateLogin, validateResetPassword } from "../validators/authValidation";
+import { validateEmail, validateLogin, validateRegister, validateResetPassword } from "../validators/authValidation";
 import { ProviderEnum } from "../utils/constants";
 import { sessionFormatter } from "../utils/sessionFormatter";
 import { verifyGoogleToken } from "../utils/verifyGoogleToken";
 
 
 const register = asyncHandler(async (req, res) => {
-      const { fullname, email, password } = req.body;
+      const { fullname, email, password } = zodErrorHandler(validateRegister(req.body));
 
       const existingUser = await User.findOne({
             $or: [
