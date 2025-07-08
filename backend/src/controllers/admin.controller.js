@@ -92,9 +92,25 @@ const updateUserRole = asyncHandler(async (req, res) => {
             .json(new ApiResponse(200, `User role updated successfully`, safeUser));
 });
 
+const deleteUserById = asyncHandler(async (req, res) => {
+      const { userId } = req.params;
+      if (!userId) throw new ApiError(400, "User id not found");
+
+      const user = await User.findById(userId);
+      if (!user) throw new ApiError(404, "User not found");
+
+      await User.findByIdAndDelete(userId);
+
+      console.log(`User with id ${userId} deleted successfully: `, { deletedBy: req.user.email });
+
+      res
+            .status(200)
+            .json(new ApiResponse(200, "User deleted successfully", null));
+});
 
 export {
       getAllUsers,
       getUserById,
-      updateUserRole
+      updateUserRole,
+      deleteUserById
 }
