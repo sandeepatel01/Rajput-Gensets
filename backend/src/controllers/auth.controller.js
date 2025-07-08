@@ -16,7 +16,6 @@ import { ProviderEnum } from "../utils/constants";
 import { sessionFormatter } from "../utils/sessionFormatter";
 import { verifyGoogleToken } from "../utils/verifyGoogleToken";
 
-
 const register = asyncHandler(async (req, res) => {
       const { fullname, email, password } = zodErrorHandler(validateRegister(req.body));
 
