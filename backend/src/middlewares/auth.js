@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { ApiError } from "../utils/ApiError";
-import { UserRolesEnum } from "../utils/constants";
+import { ApiError } from "../utils/ApiError.js";
+import { UserRolesEnum } from "../utils/constants.js";
 
 const isLoggedIn = async (req, res, next) => {
       const { accessToken } = req.cookies;
