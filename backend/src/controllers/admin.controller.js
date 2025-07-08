@@ -5,6 +5,7 @@ import { asyncHandler } from "../utils/asyncHandler";
 import { capitalize } from "../utils/helper";
 import { ApiResponse } from "../utils/ApiResponse";
 import { sessionFormatter } from "../utils/sessionFormatter";
+import { UserRolesEnum } from "../utils/constants";
 
 const getAllUsers = asyncHandler(async (req, res) => {
       const adminId = req.user.id;
@@ -72,8 +73,28 @@ const getUserById = asyncHandler(async (req, res) => {
             .json(new ApiResponse(200, "User sessions fetched successfully", formattedSessions));
 });
 
+const updateUserRole = asyncHandler(async (req, res) => {
+      const { userId } = req.params;
+      const { role } = req.body;
+
+      const allowedRoles = Object.values(UserRolesEnum);
+      if (!role || !allowedRoles.includes(role)) {
+            throw new ApiError(400, "Invalid or missing role");
+      };
+
+      const updatedUser = await User.findByIdAndUpdate(userId, { role }, { new: true });
+      const safeUser = sanitizeUser(updatedUser);
+
+      console.log(`Role of user with id ${userId} updated to ${role} successfully: `, { updatedBy: req.user.email });
+
+      res
+            .status(200)
+            .json(new ApiResponse(200, `User role updated successfully`, safeUser));
+});
+
 
 export {
       getAllUsers,
-      getUserById
+      getUserById,
+      updateUserRole
 }
