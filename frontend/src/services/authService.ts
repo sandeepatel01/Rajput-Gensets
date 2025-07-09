@@ -76,3 +76,10 @@ export const logout = async () => {
   );
   return res.data;
 };
+
+export const logoutAllSessions = async () => {
+  const res = await axiosInstance.post<ApiResponse<null>>(
+    `${AUTH_PATH}/logout-all-sessions`
+  );
+  return res.data;
+};
