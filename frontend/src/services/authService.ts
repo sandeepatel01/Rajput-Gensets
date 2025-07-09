@@ -1,6 +1,7 @@
-import { AUTH_PATH } from "../constants";
+import { ADMIN_PATH, AUTH_PATH } from "../constants";
 import axiosInstance from "../lib/axiosInstance";
 import type {
+  AllUsers,
   ApiResponse,
   ForgotPasswordFormData,
   LoginFormData,
@@ -108,5 +109,12 @@ export const deleteSession = async (sessionId: string) => {
 export const fetchProfile = async () => {
   const res = await axiosInstance.get<ApiResponse<User>>(`
     ${AUTH_PATH}/profile`);
+  return res.data;
+};
+
+export const fetchAllUsers = async () => {
+  const res = await axiosInstance.get<ApiResponse<AllUsers[]>>(
+    `${ADMIN_PATH}/users`
+  );
   return res.data;
 };
