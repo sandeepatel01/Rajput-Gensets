@@ -69,3 +69,10 @@ export const resetPassword = async ({
   );
   return res.data;
 };
+
+export const logout = async () => {
+  const res = await axiosInstance.post<ApiResponse<null>>(
+    `${AUTH_PATH}/logout`
+  );
+  return res.data;
+};
