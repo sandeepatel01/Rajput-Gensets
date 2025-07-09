@@ -118,3 +118,10 @@ export const fetchAllUsers = async () => {
   );
   return res.data;
 };
+
+export const fetchUser = async (userId: string) => {
+  const res = await axiosInstance.get<ApiResponse<Session[]>>(
+    `${ADMIN_PATH}/user/${userId}`
+  );
+  return res.data;
+};
