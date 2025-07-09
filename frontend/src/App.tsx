@@ -2,8 +2,8 @@ function App() {
   return (
     <>
       <div>
-        <h1 className="font-bold text-green-700">
-          Rajputs genset & Solar Services
+        <h1 className="text-green-600 font-bold">
+          Rajput Genset & Solar Services
         </h1>
       </div>
     </>
