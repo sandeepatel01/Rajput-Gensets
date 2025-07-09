@@ -17,3 +17,14 @@ export const loginUser = async (data: LoginFormData) => {
   );
   return res.data;
 };
+
+export const googleLoginUser = async (data: {
+  token: string;
+  rememberMe?: boolean;
+}) => {
+  const res = await axiosInstance.post<ApiResponse<null>>(
+    `${AUTH_PATH}/google-login`,
+    data
+  );
+  return res.data;
+};
