@@ -132,3 +132,10 @@ export const logoutUserSession = async (sessionId: string) => {
   );
   return res.data;
 };
+
+export const deleteUser = async (userId: string) => {
+  const res = await axiosInstance.delete<ApiResponse<null>>(
+    `${ADMIN_PATH}/user/${userId}`
+  );
+  return res.data;
+};
