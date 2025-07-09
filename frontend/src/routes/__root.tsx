@@ -11,11 +11,13 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <React.Fragment>
-      <Navbar />
-      <main>
-        <Outlet />
-      </main>
-      <Footer />
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="pt-20">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
       <TanStackRouterDevtools />
     </React.Fragment>
   );
