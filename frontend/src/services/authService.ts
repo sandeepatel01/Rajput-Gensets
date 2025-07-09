@@ -83,3 +83,10 @@ export const logoutAllSessions = async () => {
   );
   return res.data;
 };
+
+export const logoutSpecificSession = async (sessionId: string) => {
+  const res = await axiosInstance.post<ApiResponse<null>>(
+    `${AUTH_PATH}/session/${sessionId}`
+  );
+  return res.data;
+};
