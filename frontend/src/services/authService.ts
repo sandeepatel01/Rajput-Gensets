@@ -139,3 +139,11 @@ export const deleteUser = async (userId: string) => {
   );
   return res.data;
 };
+
+export const updateUserRole = async (userId: string, data: FormData) => {
+  const res = await axiosInstance.put<ApiResponse<null>>(
+    `${ADMIN_PATH}/user/${userId}`,
+    data
+  );
+  return res.data;
+};
