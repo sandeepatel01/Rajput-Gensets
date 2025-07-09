@@ -37,3 +37,28 @@ export interface BaseResponse {
 export interface ApiResponse<T> extends BaseResponse {
   data: T;
 }
+
+export interface RegisterFormData {
+  email: string;
+  password: string;
+  fullname: string;
+  avatar?: File | null;
+}
+
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+export interface ResendVerificationFormData {
+  email: string;
+}
+export interface ForgotPasswordFormData {
+  email: string;
+}
+
+export interface ResetPasswordFormData {
+  token: string;
+  password: string;
+  confirmPassword: string;
+}
