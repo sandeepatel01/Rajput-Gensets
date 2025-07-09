@@ -125,3 +125,10 @@ export const fetchUser = async (userId: string) => {
   );
   return res.data;
 };
+
+export const logoutUserSession = async (sessionId: string) => {
+  const res = await axiosInstance.post<ApiResponse<null>>(
+    `${ADMIN_PATH}/users/session/${sessionId}`
+  );
+  return res.data;
+};
