@@ -104,3 +104,9 @@ export const deleteSession = async (sessionId: string) => {
   );
   return res.data;
 };
+
+export const fetchProfile = async () => {
+  const res = await axiosInstance.get<ApiResponse<User>>(`
+    ${AUTH_PATH}/profile`);
+  return res.data;
+};
