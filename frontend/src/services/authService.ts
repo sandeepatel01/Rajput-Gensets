@@ -97,3 +97,10 @@ export const fetchUserSessions = async () => {
     ${AUTH_PATH}/sessions`);
   return res.data;
 };
+
+export const deleteSession = async (sessionId: string) => {
+  const res = await axiosInstance.delete<ApiResponse<null>>(
+    `${AUTH_PATH}/session/${sessionId}`
+  );
+  return res.data;
+};
