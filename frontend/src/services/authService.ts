@@ -6,6 +6,7 @@ import type {
   LoginFormData,
   ResendVerificationFormData,
   ResetPasswordFormData,
+  Session,
   User,
 } from "../types";
 
@@ -88,5 +89,11 @@ export const logoutSpecificSession = async (sessionId: string) => {
   const res = await axiosInstance.post<ApiResponse<null>>(
     `${AUTH_PATH}/session/${sessionId}`
   );
+  return res.data;
+};
+
+export const fetchUserSessions = async () => {
+  const res = await axiosInstance.get<ApiResponse<Session[]>>(`
+    ${AUTH_PATH}/sessions`);
   return res.data;
 };
