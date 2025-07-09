@@ -5,6 +5,7 @@ import type {
   ForgotPasswordFormData,
   LoginFormData,
   ResendVerificationFormData,
+  ResetPasswordFormData,
   User,
 } from "../types";
 
@@ -54,5 +55,17 @@ export const forgotPassword = async (data: ForgotPasswordFormData) => {
   const res = await axiosInstance.post<
     ApiResponse<null> | ApiResponse<{ code: string }>
   >(`${AUTH_PATH}/password/forgot`, data);
+  return res.data;
+};
+
+export const resetPassword = async ({
+  token,
+  password,
+  confirmPassword,
+}: ResetPasswordFormData) => {
+  const res = await axiosInstance.post<ApiResponse<null>>(
+    `${AUTH_PATH}/password/reset/${token}`,
+    { password, confirmPassword }
+  );
   return res.data;
 };
