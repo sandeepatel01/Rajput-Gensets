@@ -2,6 +2,7 @@ import { AUTH_PATH } from "../constants";
 import axiosInstance from "../lib/axiosInstance";
 import type {
   ApiResponse,
+  ForgotPasswordFormData,
   LoginFormData,
   ResendVerificationFormData,
   User,
@@ -46,5 +47,12 @@ export const resendVerification = async (data: ResendVerificationFormData) => {
     `${AUTH_PATH}/email/resend`,
     data
   );
+  return res.data;
+};
+
+export const forgotPassword = async (data: ForgotPasswordFormData) => {
+  const res = await axiosInstance.post<
+    ApiResponse<null> | ApiResponse<{ code: string }>
+  >(`${AUTH_PATH}/password/forgot`, data);
   return res.data;
 };
