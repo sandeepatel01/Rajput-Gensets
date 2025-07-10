@@ -67,7 +67,7 @@ const Navbar = () => {
                 Sign In
               </Button>
             </Link>
-            <Link to="/signin">
+            <Link to="/register">
               <Button
                 className="cursor-pointer bg-transparent hover:bg-amber-100/60 border border-amber-400/50 text-[#d87852] hover:text-black font-medium px-5 transition-all hover:border-amber-400 shadow-sm"
                 variant={"ghost"}

@@ -11,6 +11,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductPidRouteImport } from './routes/product.$pid'
@@ -22,6 +23,11 @@ const ProductsLazyRoute = ProductsLazyRouteImport.update({
   path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/products.lazy').then((d) => d.Route))
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -41,12 +47,14 @@ const ProductPidRoute = ProductPidRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/register': typeof RegisterRoute
   '/products': typeof ProductsLazyRoute
   '/product/$pid': typeof ProductPidRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/register': typeof RegisterRoute
   '/products': typeof ProductsLazyRoute
   '/product/$pid': typeof ProductPidRoute
 }
@@ -54,20 +62,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/register': typeof RegisterRoute
   '/products': typeof ProductsLazyRoute
   '/product/$pid': typeof ProductPidRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/products' | '/product/$pid'
+  fullPaths: '/' | '/about' | '/register' | '/products' | '/product/$pid'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/products' | '/product/$pid'
-  id: '__root__' | '/' | '/about' | '/products' | '/product/$pid'
+  to: '/' | '/about' | '/register' | '/products' | '/product/$pid'
+  id: '__root__' | '/' | '/about' | '/register' | '/products' | '/product/$pid'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  RegisterRoute: typeof RegisterRoute
   ProductsLazyRoute: typeof ProductsLazyRoute
   ProductPidRoute: typeof ProductPidRoute
 }
@@ -79,6 +89,13 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -108,6 +125,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  RegisterRoute: RegisterRoute,
   ProductsLazyRoute: ProductsLazyRoute,
   ProductPidRoute: ProductPidRoute,
 }
