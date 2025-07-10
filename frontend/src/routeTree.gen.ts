@@ -18,6 +18,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VerifyEmailTokenRouteImport } from './routes/verify-email/$token'
+import { Route as ResetPasswordTokenRouteImport } from './routes/reset-password/$token'
 import { Route as ProductPidRouteImport } from './routes/product.$pid'
 
 const ProductsLazyRouteImport = createFileRoute('/products')()
@@ -62,6 +63,11 @@ const VerifyEmailTokenRoute = VerifyEmailTokenRouteImport.update({
   path: '/verify-email/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordTokenRoute = ResetPasswordTokenRouteImport.update({
+  id: '/reset-password/$token',
+  path: '/reset-password/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductPidRoute = ProductPidRouteImport.update({
   id: '/product/$pid',
   path: '/product/$pid',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/resend-verification': typeof ResendVerificationRoute
   '/products': typeof ProductsLazyRoute
   '/product/$pid': typeof ProductPidRoute
+  '/reset-password/$token': typeof ResetPasswordTokenRoute
   '/verify-email/$token': typeof VerifyEmailTokenRoute
 }
 export interface FileRoutesByTo {
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/resend-verification': typeof ResendVerificationRoute
   '/products': typeof ProductsLazyRoute
   '/product/$pid': typeof ProductPidRoute
+  '/reset-password/$token': typeof ResetPasswordTokenRoute
   '/verify-email/$token': typeof VerifyEmailTokenRoute
 }
 export interface FileRoutesById {
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/resend-verification': typeof ResendVerificationRoute
   '/products': typeof ProductsLazyRoute
   '/product/$pid': typeof ProductPidRoute
+  '/reset-password/$token': typeof ResetPasswordTokenRoute
   '/verify-email/$token': typeof VerifyEmailTokenRoute
 }
 export interface FileRouteTypes {
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
     | '/resend-verification'
     | '/products'
     | '/product/$pid'
+    | '/reset-password/$token'
     | '/verify-email/$token'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
     | '/resend-verification'
     | '/products'
     | '/product/$pid'
+    | '/reset-password/$token'
     | '/verify-email/$token'
   id:
     | '__root__'
@@ -135,6 +146,7 @@ export interface FileRouteTypes {
     | '/resend-verification'
     | '/products'
     | '/product/$pid'
+    | '/reset-password/$token'
     | '/verify-email/$token'
   fileRoutesById: FileRoutesById
 }
@@ -147,6 +159,7 @@ export interface RootRouteChildren {
   ResendVerificationRoute: typeof ResendVerificationRoute
   ProductsLazyRoute: typeof ProductsLazyRoute
   ProductPidRoute: typeof ProductPidRoute
+  ResetPasswordTokenRoute: typeof ResetPasswordTokenRoute
   VerifyEmailTokenRoute: typeof VerifyEmailTokenRoute
 }
 
@@ -208,6 +221,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyEmailTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password/$token': {
+      id: '/reset-password/$token'
+      path: '/reset-password/$token'
+      fullPath: '/reset-password/$token'
+      preLoaderRoute: typeof ResetPasswordTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/product/$pid': {
       id: '/product/$pid'
       path: '/product/$pid'
@@ -227,6 +247,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResendVerificationRoute: ResendVerificationRoute,
   ProductsLazyRoute: ProductsLazyRoute,
   ProductPidRoute: ProductPidRoute,
+  ResetPasswordTokenRoute: ResetPasswordTokenRoute,
   VerifyEmailTokenRoute: VerifyEmailTokenRoute,
 }
 export const routeTree = rootRouteImport
