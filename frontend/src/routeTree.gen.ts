@@ -11,6 +11,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResendVerificationRouteImport } from './routes/resend-verification'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AboutRouteImport } from './routes/about'
@@ -24,6 +25,11 @@ const ProductsLazyRoute = ProductsLazyRouteImport.update({
   path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/products.lazy').then((d) => d.Route))
+const ResendVerificationRoute = ResendVerificationRouteImport.update({
+  id: '/resend-verification',
+  path: '/resend-verification',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -55,6 +61,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/resend-verification': typeof ResendVerificationRoute
   '/products': typeof ProductsLazyRoute
   '/product/$pid': typeof ProductPidRoute
 }
@@ -63,6 +70,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/resend-verification': typeof ResendVerificationRoute
   '/products': typeof ProductsLazyRoute
   '/product/$pid': typeof ProductPidRoute
 }
@@ -72,6 +80,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/resend-verification': typeof ResendVerificationRoute
   '/products': typeof ProductsLazyRoute
   '/product/$pid': typeof ProductPidRoute
 }
@@ -82,16 +91,25 @@ export interface FileRouteTypes {
     | '/about'
     | '/login'
     | '/register'
+    | '/resend-verification'
     | '/products'
     | '/product/$pid'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/login' | '/register' | '/products' | '/product/$pid'
+  to:
+    | '/'
+    | '/about'
+    | '/login'
+    | '/register'
+    | '/resend-verification'
+    | '/products'
+    | '/product/$pid'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/login'
     | '/register'
+    | '/resend-verification'
     | '/products'
     | '/product/$pid'
   fileRoutesById: FileRoutesById
@@ -101,6 +119,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  ResendVerificationRoute: typeof ResendVerificationRoute
   ProductsLazyRoute: typeof ProductsLazyRoute
   ProductPidRoute: typeof ProductPidRoute
 }
@@ -112,6 +131,13 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resend-verification': {
+      id: '/resend-verification'
+      path: '/resend-verification'
+      fullPath: '/resend-verification'
+      preLoaderRoute: typeof ResendVerificationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -157,6 +183,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  ResendVerificationRoute: ResendVerificationRoute,
   ProductsLazyRoute: ProductsLazyRoute,
   ProductPidRoute: ProductPidRoute,
 }
