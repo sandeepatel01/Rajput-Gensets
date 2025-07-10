@@ -59,7 +59,7 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="flex items-center space-x-3">
-            <Link to="/signin">
+            <Link to="/login">
               <Button
                 className="cursor-pointer bg-[#56b398] hover:bg-amber-100/60 border border-amber-400/50 text-[#18181b] hover:text-black font-medium px-5 transition-all hover:border-amber-400 shadow-sm"
                 variant={"ghost"}
