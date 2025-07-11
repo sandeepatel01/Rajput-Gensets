@@ -62,3 +62,11 @@ export interface ResetPasswordFormData {
   password: string;
   confirmPassword: string;
 }
+
+export interface AxiosErrorResponse {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+}
