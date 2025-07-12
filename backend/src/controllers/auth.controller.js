@@ -90,12 +90,19 @@ const verifyEmail = asyncHandler(async (req, res) => {
             verificationTokenExpiry: null,
       });
 
-      await Session.create({
+      const session = await Session.create({
             userId: user._id,
             userAgent: req.headers["user-agent"],
             ipAddress: req.ip,
             refreshToken: hashedRefreshToken,
             expiresAt,
+      });
+
+      await User.findByIdAndUpdate(user._id, {
+            isVerified: true,
+            verificationToken: null,
+            verificationTokenExpiry: null,
+            $push: { sessions: session._id }, // ✅ now defined
       });
 
       console.log("User verified successfully: ", { email: user.email, userId: user._id, IP: req.ip });
@@ -164,20 +171,26 @@ const login = asyncHandler(async (req, res) => {
 
       const expiresAt = new Date(Date.now() + ms(process.env.REFRESH_TOKEN_EXPIRY));
 
+      let session;
       if (existingSession) {
             await Session.findByIdAndUpdate(existingSession._id, {
                   refreshToken: hashedRefreshToken,
-                  expiresAt
-            });
-      } else {
-            await Session.create({
-                  userId: user._id,
-                  userAgent,
-                  ipAddress,
-                  refreshToken: hashedRefreshToken,
                   expiresAt,
             });
+      } else {
+            session = await Session.create({
+                  userId: user._id,
+                  userAgent: req.headers["user-agent"],
+                  ipAddress: req.ip,
+                  refreshToken: hashedRefreshToken,
+                  expiresAt,
+                  keepSignedIn: keepSignedIn || false,
+            });
       };
+
+      await User.findByIdAndUpdate(user._id, {
+            $push: { sessions: session._id },
+      });
 
       console.log("User logged in successfully: ", { email, userId: user._id, IP: req.ip });
 
@@ -191,7 +204,7 @@ const login = asyncHandler(async (req, res) => {
 
 const logout = asyncHandler(async (req, res) => {
       const { refreshToken } = req.cookies;
-      const { _id: id, email } = req.user;
+      const { id, email } = req.user;
 
       if (!refreshToken) throw new ApiError(400, "Refresh token not found");
 
@@ -378,7 +391,6 @@ const logoutAllSessions = asyncHandler(async (req, res) => {
 
 const getActiveSessions = asyncHandler(async (req, res) => {
       const { id: userId } = req.user;
-
       const currentRefreshToken = req.cookies.refreshToken;
       const hashedRefreshToken = hashToken(currentRefreshToken);
 
@@ -387,21 +399,20 @@ const getActiveSessions = asyncHandler(async (req, res) => {
             .sort({ createdAt: -1 })
             .lean();
 
-      const setCurrentFlag = sessions.map(session => ({
+      const setCurrentFlag = sessions.map((session) => ({
             ...session,
-            isCurrent: session.refreshToken === hashedRefreshToken
+            current: session.refreshToken === hashedRefreshToken,
       }));
 
-      const removeRefreshToken = setCurrentFlag.map(({
-            refreshToken,
-            ...rest
-      }) => rest);
+      const removeRefreshToken = setCurrentFlag.map(
+            ({ refreshToken, ...rest }) => rest
+      );
+
       const formattedSessions = await sessionFormatter(removeRefreshToken);
 
       res
             .status(200)
             .json(new ApiResponse(200, "Get active sessions successfully", formattedSessions));
-
 });
 
 const logoutSpecificSession = asyncHandler(async (req, res) => {
@@ -468,6 +479,7 @@ const loginWithGoogle = asyncHandler(async (req, res) => {
       const hashedRefreshToken = hashToken(refreshToken);
       const expiresAt = new Date(Date.now() + ms(process.env.REFRESH_TOKEN_EXPIRY));
 
+      let session;
       if (existingSession) {
             // Update refreshToken + expiry for existing session
             await Session.updateOne(
@@ -481,14 +493,19 @@ const loginWithGoogle = asyncHandler(async (req, res) => {
             );
       } else {
             // Create new session
-            await Session.create({
+            session = await Session.create({
                   userId: user._id,
-                  userAgent,
-                  ipAddress,
+                  userAgent: req.headers["user-agent"],
+                  ipAddress: req.ip,
                   refreshToken: hashedRefreshToken,
                   expiresAt,
+                  keepSignedIn: keepSignedIn || false,
             });
       };
+
+      await User.findByIdAndUpdate(user._id, {
+            $push: { sessions: session._id },
+      });
 
       console.log(`User ${user.email} logged in with Google successfully`);
 

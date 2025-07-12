@@ -19,6 +19,9 @@ const sessionSchema = new mongoose.Schema({
       deviceInfo: {
             type: String
       },
+      userAgent: {
+            type: String,
+      },
       ipAddress: {
             type: String
       },
