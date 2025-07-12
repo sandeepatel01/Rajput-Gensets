@@ -1,6 +1,6 @@
 export const UserRolesEnum = {
-      ADMIN: "ADMIN",
-      USER: "USER",
+      ADMIN: "admin",
+      USER: "user",
 };
 
 export const ProviderEnum = {
