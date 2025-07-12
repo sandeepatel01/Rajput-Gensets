@@ -32,7 +32,7 @@ export const googleLogin = async (data: {
   rememberMe?: boolean;
 }) => {
   const res = await axiosInstance.post<ApiResponse<null>>(
-    `${AUTH_PATH}/google-login`,
+    `${AUTH_PATH}/login/google`,
     data
   );
   return res.data;
@@ -107,8 +107,9 @@ export const deleteSession = async (sessionId: string) => {
 };
 
 export const fetchProfile = async () => {
-  const res = await axiosInstance.get<ApiResponse<User>>(`
-    ${AUTH_PATH}/profile`);
+  const res = await axiosInstance.get<ApiResponse<User>>(
+    `${AUTH_PATH}/profile`
+  );
   return res.data;
 };
 
