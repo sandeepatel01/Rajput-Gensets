@@ -10,10 +10,10 @@ export interface User {
 
 export interface Session {
   id: string;
-  deviceId: string;
+  device: string;
   location: string;
   ip: string;
-  lastActivity: string;
+  lastActive: string;
   status: "active" | "expired";
   current?: boolean;
 }
@@ -24,7 +24,7 @@ export interface AllUsers {
   email: string;
   role: "user" | "admin";
   status: "active" | "inactive" | "expired";
-  lastActivity: string;
+  lastActive: string;
   sessionsCount: number;
 }
 
