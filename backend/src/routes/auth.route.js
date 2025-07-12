@@ -39,7 +39,7 @@ router.route("/session/:sessionId").post(isLoggedIn, logoutSpecificSession);
 
 router.route("/login/google").post(loginWithGoogle);
 
-router.route("/profile").post(isLoggedIn, getProfile);
+router.route("/profile").get(isLoggedIn, getProfile);
 
 
 export default router;

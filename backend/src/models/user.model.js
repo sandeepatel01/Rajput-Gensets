@@ -17,14 +17,9 @@ const userSchema = new mongoose.Schema({
             type: String
       },
       avatar: {
-            type: {
-                  url: String,
-                  localpath: String
-            },
-            default: {
-                  url: `https://placehold.co/600x400`,
-                  localpath: ""
-            }
+            type: String,
+            default:
+                  "https://res.cloudinary.com/dye5okklc/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1752310267/rgs_logo_dobjsx.png",
       },
       role: {
             type: String,
