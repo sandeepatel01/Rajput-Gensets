@@ -94,8 +94,9 @@ export const logoutSpecificSession = async (sessionId: string) => {
 };
 
 export const fetchUserSessions = async () => {
-  const res = await axiosInstance.get<ApiResponse<Session[]>>(`
-    ${AUTH_PATH}/sessions`);
+  const res = await axiosInstance.get<ApiResponse<Session[]>>(
+    `${AUTH_PATH}/sessions`
+  );
   return res.data;
 };
 

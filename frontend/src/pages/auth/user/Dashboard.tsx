@@ -207,8 +207,10 @@ const Dashboard = () => {
                       <p>{userProfile?.email}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">ID</p>
-                      <p className="font-mono">{userProfile?.id}</p>
+                      <p className="text-sm text-muted-foreground">
+                        Account ID
+                      </p>
+                      <p className="font-mono">{userProfile?._id}</p>
                     </div>
                   </div>
                 </div>
@@ -235,15 +237,27 @@ const Dashboard = () => {
                     ))}
                   </div>
                 ) : sessionData ? (
-                  <Table>
+                  <Table className="text-zinc-50">
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>Device</TableHead>
-                        <TableHead>Location</TableHead>
-                        <TableHead>IP</TableHead>
-                        <TableHead>Last Active</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead className="text-zinc-50 font-bold">
+                          Device
+                        </TableHead>
+                        <TableHead className="text-zinc-50 font-bold">
+                          Location
+                        </TableHead>
+                        <TableHead className="text-zinc-50 font-bold">
+                          IP Address
+                        </TableHead>
+                        <TableHead className="text-zinc-50 font-bold">
+                          Last Active
+                        </TableHead>
+                        <TableHead className="text-zinc-50 font-bold">
+                          Status
+                        </TableHead>
+                        <TableHead className="text-zinc-50 font-bold">
+                          Actions
+                        </TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -252,16 +266,20 @@ const Dashboard = () => {
                           ? Smartphone
                           : Monitor;
                         return (
-                          <TableRow key={s.id}>
+                          <TableRow
+                            key={s._id}
+                            className="hover:bg-zinc-800 cursor-pointer"
+                          >
                             <TableCell className="flex items-center gap-2">
                               <Icon className="h-4 w-4" />
                               {s.device}
                             </TableCell>
                             <TableCell>{s.location}</TableCell>
                             <TableCell>{s.ip}</TableCell>
-                            <TableCell>{s.lastActive}</TableCell>
+                            <TableCell>{s.lastActivity}</TableCell>
                             <TableCell>
                               <Badge
+                                variant="default"
                                 className={
                                   s.current
                                     ? "bg-zinc-50 text-zinc-900"
@@ -278,8 +296,9 @@ const Dashboard = () => {
                                 <Button
                                   variant="destructive"
                                   size="sm"
+                                  className="h-7 cursor-pointer"
                                   onClick={() =>
-                                    logoutSpecificSessionHandler(s.id)
+                                    logoutSpecificSessionHandler(s._id)
                                   }
                                 >
                                   <LogOut className="h-4 w-4 mr-1" />

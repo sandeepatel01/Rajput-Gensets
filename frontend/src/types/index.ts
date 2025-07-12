@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  _id: string;
   fullname: string;
   email: string;
   avatar: string | null;
@@ -9,11 +9,11 @@ export interface User {
 }
 
 export interface Session {
-  id: string;
+  _id: string;
   device: string;
   location: string;
   ip: string;
-  lastActive: string;
+  lastActivity: string | "Unknown";
   status: "active" | "expired";
   current?: boolean;
 }
@@ -24,7 +24,7 @@ export interface AllUsers {
   email: string;
   role: "user" | "admin";
   status: "active" | "inactive" | "expired";
-  lastActive: string;
+  lastActivity: string;
   sessionsCount: number;
 }
 
