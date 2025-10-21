@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ButtonLoading } from "@/components/shared/ButtonLoading";
+import Link from "next/link";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -115,13 +116,26 @@ const Login = () => {
                   )}
                 />
               </div>
-              <div>
+              <div className="mb-3">
                 <ButtonLoading
                   type="submit"
                   text="Login"
                   loading={loading}
                   className="w-full"
                 />
+              </div>
+              <div className="text-center">
+                <div className="flex justify-center items-center gap-1">
+                  <p>Don&apos;t have an account?</p>
+                  <Link href="/" className="text-primary underline">
+                    Create Account
+                  </Link>
+                </div>
+                <div className="mt-3">
+                  <Link href="/" className="text-primary underline">
+                    Forgot Password
+                  </Link>
+                </div>
               </div>
             </form>
           </Form>
