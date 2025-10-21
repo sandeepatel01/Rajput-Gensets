@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { USER_LOGIN } from "@/routes/user.route";
+import Link from "next/link";
 import React from "react";
 
 const page = () => {
@@ -7,7 +9,9 @@ const page = () => {
       <h1 className="font-bold text-4xl text-zinc-600">
         Rajput Gensets & Solar
       </h1>
-      <Button>Explore More</Button>
+      <Link href={USER_LOGIN}>
+        <Button className="cursor-pointer">Explore More</Button>
+      </Link>
     </div>
   );
 };
